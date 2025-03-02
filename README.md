@@ -25,5 +25,7 @@ lm_eval --tasks math500 --model hf --batch_size 8 --model_args pretrained=deepse
 
 `log/`文件夹内为结果分别为9和9.6的输出和日志文件。
 
+`test/`文件夹内为一些测试日志。
+
 ## 分析文档
 在`analyze/`文件夹下。
