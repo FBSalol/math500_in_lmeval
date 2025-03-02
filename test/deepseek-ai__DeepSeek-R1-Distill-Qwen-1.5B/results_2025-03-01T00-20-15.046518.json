@@ -1,0 +1,112 @@
+{
+  "results": {
+    "math500": {
+      "alias": "math500",
+      "calculate_math_accuracy,none": 0.0,
+      "calculate_math_accuracy_stderr,none": "N/A"
+    }
+  },
+  "group_subtasks": {
+    "math500": []
+  },
+  "configs": {
+    "math500": {
+      "task": "math500",
+      "tag": [
+        "math_word_problems"
+      ],
+      "dataset_path": "HuggingFaceH4/MATH-500",
+      "test_split": "test",
+      "doc_to_text": "{{problem}}",
+      "doc_to_target": "{{answer}}",
+      "unsafe_code": false,
+      "description": "",
+      "target_delimiter": " ",
+      "fewshot_delimiter": "\n\n",
+      "num_fewshot": 0,
+      "metric_list": [
+        {
+          "metric": "def calculate_math_accuracy(*args, **kwargs):\n    '''\n    if args:\n        # 调用方式为 calculate_math_accuracy([golden, generated])\n        if len(args) == 1 and isinstance(args[0], list) and len(args[0]) == 2:\n            golden = args[0][0]\n            generated = args[0][1]\n        else:\n            raise ValueError(\"Unexpected arguments passed\")\n    elif \"references\" in kwargs and \"predictions\" in kwargs:\n        # 调用方式为 calculate_math_accuracy(references=[golden], predictions=[generated])\n        if kwargs[\"references\"] and kwargs[\"predictions\"]:\n            golden = kwargs[\"references\"][0]\n            generated = kwargs[\"predictions\"][0]\n        else:\n            raise ValueError(\"Empty references or predictions\")\n    else:\n        raise ValueError(\"Invalid arguments passed\")\n    '''\n    if kwargs[\"references\"] and kwargs[\"predictions\"]:\n        scores = []\n        i=1\n        for golden, generated in zip(kwargs[\"references\"], kwargs[\"predictions\"]):\n            print(i)\n            i+=1\n            print(\"golden: \", golden)\n            print(\"generated: \", generated)\n            print(\"/n\")\n            processed_gold = process_gt(golden)\n            processed_generated = process_generated_answer(generated)\n            score = grader.grade_answer(processed_generated, processed_gold)\n            scores.append(score)\n        return scores\n    else:\n        print(\"error\")\n    # processed_gold = process_gt(golden)\n    # processed_generated = process_generated_answer(generated)\n    # return grader.grade_answer(processed_generated, processed_gold)\n",
+          "aggregation": "def aggregate_scores(input):\n    return sum([sum(i) for i in input]) / sum([len(j) for j in input])\n",
+          "higher_is_better": true
+        }
+      ],
+      "output_type": "generate_until",
+      "generation_kwargs": {
+        "until": [
+          "\n\n"
+        ],
+        "do_sample": false
+      },
+      "repeats": 1,
+      "should_decontaminate": false
+    }
+  },
+  "versions": {
+    "math500": "Yaml"
+  },
+  "n-shot": {
+    "math500": 0
+  },
+  "higher_is_better": {
+    "math500": {
+      "calculate_math_accuracy": true
+    }
+  },
+  "n-samples": {
+    "math500": {
+      "original": 500,
+      "effective": 500
+    }
+  },
+  "config": {
+    "model": "hf",
+    "model_args": "pretrained=deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "model_num_parameters": 1777088000,
+    "model_dtype": "torch.bfloat16",
+    "model_revision": "main",
+    "model_sha": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "batch_size": "8",
+    "batch_sizes": [],
+    "device": null,
+    "use_cache": null,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "gen_kwargs": null,
+    "random_seed": 0,
+    "numpy_seed": 1234,
+    "torch_seed": 1234,
+    "fewshot_seed": 1234
+  },
+  "git_hash": null,
+  "date": 1740759152.9179845,
+  "pretty_env_info": "PyTorch version: 2.6.0+cu124\nIs debug build: False\nCUDA used to build PyTorch: 12.4\nROCM used to build PyTorch: N/A\n\nOS: Microsoft Windows 11 专业版 (10.0.26100 64 位)\nGCC version: Could not collect\nClang version: Could not collect\nCMake version: Could not collect\nLibc version: N/A\n\nPython version: 3.9.21 | packaged by conda-forge | (main, Dec  5 2024, 13:41:22) [MSC v.1929 64 bit (AMD64)] (64-bit runtime)\nPython platform: Windows-10-10.0.26100-SP0\nIs CUDA available: True\nCUDA runtime version: Could not collect\nCUDA_MODULE_LOADING set to: LAZY\nGPU models and configuration: GPU 0: NVIDIA GeForce RTX 4060\nNvidia driver version: 566.36\ncuDNN version: Could not collect\nHIP runtime version: N/A\nMIOpen runtime version: N/A\nIs XNNPACK available: True\n\nCPU:\nName: AMD Ryzen 5 5600 6-Core Processor              \nManufacturer: AuthenticAMD\nFamily: 107\nArchitecture: 9\nProcessorType: 3\nDeviceID: CPU0\nCurrentClockSpeed: 3501\nMaxClockSpeed: 3501\nL2CacheSize: 3072\nL2CacheSpeed: None\nRevision: 8450\n\nVersions of relevant libraries:\n[pip3] numpy==2.0.2\n[pip3] torch==2.6.0+cu124\n[pip3] torchaudio==2.6.0+cu124\n[pip3] torchvision==0.21.0+cu124\n[conda] numpy                     2.0.2                    pypi_0    pypi\n[conda] torch                     2.6.0+cu124              pypi_0    pypi\n[conda] torchaudio                2.6.0+cu124              pypi_0    pypi\n[conda] torchvision               0.21.0+cu124             pypi_0    pypi",
+  "transformers_version": "4.49.0",
+  "upper_git_hash": null,
+  "tokenizer_pad_token": [
+    "<｜end▁of▁sentence｜>",
+    "151643"
+  ],
+  "tokenizer_eos_token": [
+    "<｜end▁of▁sentence｜>",
+    "151643"
+  ],
+  "tokenizer_bos_token": [
+    "<｜begin▁of▁sentence｜>",
+    "151646"
+  ],
+  "eot_token_id": 151643,
+  "max_length": 131072,
+  "task_hashes": {},
+  "model_source": "hf",
+  "model_name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "model_name_sanitized": "deepseek-ai__DeepSeek-R1-Distill-Qwen-1.5B",
+  "system_instruction": null,
+  "system_instruction_sha": null,
+  "fewshot_as_multiturn": false,
+  "chat_template": null,
+  "chat_template_sha": null,
+  "start_time": 4.4274342,
+  "end_time": 481.605459,
+  "total_evaluation_time_seconds": "477.1780248"
+}
