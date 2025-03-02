@@ -1,0 +1,38 @@
+tag:
+  - math_word_problems
+task: math500
+dataset_path: HuggingFaceH4/MATH-500
+training_split: null
+validation_split: null
+test_split: test
+# doc_to_text: "{{problem}}"
+# doc_to_text: "Question: {{problem}}\nThink:\nFinal Answer:"     0.04
+doc_to_text: "Question: {{problem}}\nFinal Answer:"
+# doc_to_text: "Question: {{problem}}\nDeduce the final answer and output the fianl answer"     效果很差
+doc_to_target: "{{answer}}"
+# description: "Only generate the answer to the question."
+# description: "Please solve the problem and provide the answer in the format: 'The answer is: {}'."   效果不好
+# gen_prefix: "Final Answer:"
+fewshot_config:
+  sampler: first_n
+  samples:
+    - problem: What is $\left(\frac{7}{8}\right)^3 \cdot \left(\frac{7}{8}\right)^{-3}$?
+      answer: $1$
+    - problem: In how many ways can 4 books be selected from a shelf of 6 books if the order in which the books are selected does not matter?
+      answer: $15$
+    - problem: Find the distance between the points $(2,1,-4)$ and $(5,8,-3)$.
+      answer: $\sqrt{59}$
+    - problem: The faces of an octahedral die are labeled with digits $1$ through $8$. What is the probability, expressed as a common fraction, of rolling a sum of $15$ with a pair of such octahedral dice?
+      answer: $\frac{1}{32}$
+    - problem: The first three terms of an arithmetic sequence are 1, 10 and 19, respectively. What is the value of the 21st term?
+      answer: $181$
+    - problem: Calculate $6 \cdot 8\frac{1}{3}$
+      answer: $50$
+    - problem: When the binary number $100101110010_2$ is divided by 4, what is the remainder (give your answer in base 10)?
+      answer: $2$
+    - problem: How many zeros are at the end of the product 25 $\times$ 240?
+      answer: $3$
+metric_list:
+  - metric: !function utils.calculate_math_accuracy
+    aggregation: !function utils.aggregate_scores
+    higher_is_better: true
